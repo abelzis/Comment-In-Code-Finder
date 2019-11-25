@@ -2,13 +2,16 @@
 //
 
 #include <iostream>
-#include <filesystem>
 #include <fstream>
 #include <string>
-#include <string_view>
 #include <vector>
 using std::string;
 using std::vector;
+
+// C++17 IS REQUIRED
+#if _HAS_CXX17
+#include <filesystem>
+#include <string_view>
 
 namespace fs = std::filesystem;	// shorten namespace
 
@@ -84,7 +87,7 @@ void searchComments(std::ifstream& inp, std::ofstream& out, const fs::directory_
 							is_multiline_comment = false;
 						}
 					}
-				}	
+				}
 			}
 			else if (temp[i] == multiline_symbol[0] && !in_quotes)
 			{
@@ -115,7 +118,7 @@ void searchComments(std::ifstream& inp, std::ofstream& out, const fs::directory_
 						out_line_num++;
 						continue;
 					}
-					
+
 				}
 				// end of the multiline comment "*/"
 				if (i - 1 >= 0 && is_multiline_comment)
@@ -159,8 +162,11 @@ void getFilePathFromSubfolder(const string& path, std::ofstream& out)
 	}
 }
 
-int main(int argc, const char *argv[])
+#endif
+
+int main(int argc, const char* argv[])
 {
+#if _HAS_CXX17
 	if (argc > 1)	// if cmd arguments passed, only try to take the first one
 	{
 		string init_path = argv[1];
@@ -169,7 +175,7 @@ int main(int argc, const char *argv[])
 
 		std::ofstream out("result.txt");
 
-		try 
+		try
 		{
 			getFilePathFromSubfolder(init_path, out);
 			std::cout << "\n\nSuccess. Please refer to output file named \"results.txt\"\n";
@@ -191,7 +197,7 @@ int main(int argc, const char *argv[])
 		std::getline(std::cin, init_path);
 
 		std::ofstream out("result.txt");
-		
+
 		try
 		{
 			getFilePathFromSubfolder(init_path, out);
@@ -202,4 +208,7 @@ int main(int argc, const char *argv[])
 			std::cout << "Error: " << e.what() << "\n";
 		}
 	}
+#else
+	std::cout << "Error: Required C++17 compiler.";
+#endif
 }
