@@ -7,6 +7,9 @@ Compile it using C++17 compiler or later. Input desired folder to be searched an
 # Available formats
 
 `//` single line comments
+
 `/* */` multi line comments
+
 `<!-- -->` html multi line comments
+
 `@! !@` cshtml multi line comments
